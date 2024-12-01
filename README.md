@@ -1,1 +1,3 @@
-# E-Commerce-Trabalho-INF008
+# Trabalho1-INF008
+Primeiro trabalho da matéria inf008
+Criar um e-commerce
