@@ -30,12 +30,21 @@ public class Product implements Serializable {
         productList.add(this);
     }
 
+    public static void productBought(int index){
+        productList.get(index).totalInInventory--;
+    }
+
     public static void add(Product product){
         productList.add(product);
     }
 
     public void display(){
         System.out.println("["+id+"]-"+name+"-$:"+price);
+    }
+
+    public static Product getLowestInventory(){
+        Product lowestInventory = new Product();
+        return lowestInventory;
     }
 
     @SuppressWarnings("unchecked")

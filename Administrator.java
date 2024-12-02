@@ -28,4 +28,12 @@ public class Administrator extends User{
         Product product = new Product(name, description, price, totalInInventory, category);
         Product.add(product);
     }
+
+    public static void moreExpensiveOrder(){
+
+    }
+
+    public static void productWithLowestInvetory(){
+
+    }
 }

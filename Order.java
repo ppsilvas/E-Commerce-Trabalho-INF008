@@ -1,22 +1,39 @@
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TreeMap;
 
 public class Order implements Serializable{
     private int id;
-    private Date date;
+    private String date;
     protected static float orderTotal = 0;
     private int costumerId;
     private int numberOfOrder = 0;
-    private static ArrayList<ShoppingCart> orderList;
+    private ArrayList<Product> shoppingCart;
+    private static TreeMap<Float, Order> orderMap = new TreeMap<Float, Order>();
 
     public Order(){
 
     }
 
-    public Order(Date date, int costumerId){
+    public Order(int costumerId, ArrayList<Product> shoppingCart){
         id = numberOfOrder++;
-        this.date = date;
+        Date x = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        this.date = sdf.format(x);
         this.costumerId = costumerId;
+        this.shoppingCart = shoppingCart;
+
     }
+
+    public static void finishOrder(float total, Order finishedOrder){
+        orderMap.put(total, finishedOrder);
+    }
+
+    public static Order mostExpensiveOrder(){
+        float key = orderMap.lastKey();
+        return orderMap.get(key);
+    } 
+
 }
