@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.TreeMap;
 
 public class Order implements Serializable{
-    private int id;
+    private  int id;
     private String date;
     protected static float orderTotal = 0;
     private int costumerId;
@@ -31,9 +31,10 @@ public class Order implements Serializable{
         orderMap.put(total, finishedOrder);
     }
 
-    public static Order mostExpensiveOrder(){
+    public static void mostExpensiveOrder(){
         float key = orderMap.lastKey();
-        return orderMap.get(key);
+        Order mostExpensive =  orderMap.get(key);
+        System.out.println("["+mostExpensive.id+"] - $"+mostExpensive.orderTotal+" - "+mostExpensive.date);
     } 
 
 }

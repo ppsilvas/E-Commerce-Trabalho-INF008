@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class Product implements Serializable {
     protected int id;
@@ -42,9 +44,16 @@ public class Product implements Serializable {
         System.out.println("["+id+"]-"+name+"-$:"+price);
     }
 
-    public static Product getLowestInventory(){
-        Product lowestInventory = new Product();
-        return lowestInventory;
+    public static void getLowestInventory(){
+        Product lowestInventory = productList.getFirst();
+        Iterator<Product> producIterator = productList.iterator();
+        while(producIterator.hasNext()){
+            if(lowestInventory.totalInInventory > producIterator.next().totalInInventory){
+                lowestInventory = producIterator.next();
+                producIterator.next();
+            }
+        }
+        System.out.println("["+lowestInventory.id+"] -"+lowestInventory.name);
     }
 
     @SuppressWarnings("unchecked")
