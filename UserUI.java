@@ -10,9 +10,9 @@ public class UserUI {
 
     public static void login(){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Username");
+        System.out.println("Username\n");
         String username = sc.nextLine();
-        System.out.println("Passowrd");
+        System.out.println("Passowrd\n");
         String password = sc.nextLine();
         int credentials = checkCredentials(username, password);
         if(credentials == 1){
@@ -22,6 +22,7 @@ public class UserUI {
         }else{
             System.out.println("Not possible handle password");
         }
+        sc.close();
     }
 
     private static int checkCredentials(String username, String password){
@@ -39,32 +40,24 @@ public class UserUI {
 
     private static void costumerUI(Costumer costumer){
         System.out.println("Hello, "+ costumer);
-        Scanner sc = new Scanner(System.in);
-        System.out.println("[1]-Start new order");
-        System.out.println("[0]-Exit");
-        int choice1 = sc.nextInt();
-        sc.nextLine();
-        if(choice1 == 1){
-            System.out.println("[1]-Add product");
-            System.out.println("[2]-View shopping cart");
-            System.out.println("[3]-Finish order");
-            System.out.println("[0]-Back");
-            int choice2 = sc.nextInt();
-            sc.nextLine();
-            switch (choice2) {
+        int response = CostumerUI.homePage();
+        if(response == 1){
+            int choice = CostumerUI.orderPage();
+            switch (choice) {
                 case 1:
-                    for(Product product:Product.productList)
-                        product.display();
-                    ShoppingCart.addCart(Product.productList.get(sc.nextInt()));
+                    CostumerUI.addPage();
+                    CostumerUI.homePage();
                     break;
                 case 2:
-                    ShoppingCart.showCart();
+                    CostumerUI.viewCartPage();
+                    CostumerUI.homePage();
                     break;
                 case 3:
-
+                    CostumerUI.finishOrderPage();
+                    CostumerUI.homePage();
                     break;
                 case 0:
-
+                    CostumerUI.homePage();
                     break;
                 default:
                     break;
@@ -72,50 +65,27 @@ public class UserUI {
         }else{
             login();
         }
-        sc.close();
     }
 
     private static void administratorUI(Administrator administrator){
         System.out.println("Hello, "+administrator);
-        Scanner sc = new Scanner(System.in);
-        System.out.println("[1]-Create new User");
-        System.out.println("[2]-Create new Product");
-        System.out.println("[3]-More expensive order Report");
-        System.out.println("[4]-Product with lowest inventory Report");
-        System.out.println("[0]-Exit");
-        int choice = sc.nextInt();
-        sc.nextLine();
-        switch (choice) {
+        int response = AdministratorUI.homePage();
+        switch (response) {
             case 1:
-                System.out.println("User's name: ");
-                String userName = sc.nextLine();
-                System.out.println("User's email: ");
-                String userEmail = sc.nextLine();
-                System.out.println("User's password: ");
-                String userPassword = sc.nextLine();
-                Administrator.createUser(userName, userEmail, userPassword);
+                AdministratorUI.createUserPage();
+                AdministratorUI.homePage();
                 break;
             case 2:
-                System.out.println("Product's name: ");
-                String productName = sc.next();
-                System.out.println("Product's description: ");
-                String productDescription = sc.next();
-                sc.nextLine();
-                System.out.println("Product's price: ");
-                float productPrice = sc.nextFloat();
-                sc.nextLine();
-                System.out.println("Total in Inventory: ");
-                int productInventory = sc.nextInt();
-                sc.nextLine();
-                System.out.println("Product's category: ");
-                String productCategory = sc.nextLine();
-                Administrator.createProduct(productName, productDescription, productPrice, productInventory, productCategory);
+                AdministratorUI.createProductPage();
+                AdministratorUI.homePage();
                 break;
             case 3:
-
+                AdministratorUI.moreExpensiveReportPage();
+                AdministratorUI.homePage();
                 break;
             case 4:
-
+                AdministratorUI.lowestInventoryReportPage();
+                AdministratorUI.homePage();
                 break;
             case 0:
                 login();
@@ -123,6 +93,5 @@ public class UserUI {
             default:
                 break;
         }
-        sc.close();
     }
 }
