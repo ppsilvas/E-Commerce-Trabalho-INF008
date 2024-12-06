@@ -2,16 +2,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ShoppingCart {
-    private int costumerId;
-    private static ArrayList<Product> shoppingCart = new ArrayList<Product>();
-
-    public ShoppingCart(int costumerId){
-        this.costumerId = costumerId;
-    }
+    protected static ArrayList<Product> shoppingCart = new ArrayList<Product>();
+    private static float total =0;
 
     public static void addCart(Product product){
         shoppingCart.add(product);
-        Order.orderTotal += product.price;
+        total += product.price;
         Product.productBought(product.id);
     }
 
@@ -20,8 +16,8 @@ public class ShoppingCart {
             product.display();
     }
 
-    public void finishOrder(){
-        Order order = new Order(costumerId, shoppingCart);
+    public static void finishOrder(int costumerId){
+        Order order = new Order(costumerId, shoppingCart, total);
         Order.finishOrder(costumerId, order);
     }
 

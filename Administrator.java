@@ -21,7 +21,7 @@ public class Administrator extends User{
 
     public static void createProduct(String name, String description, float price, int totalInInventory, String category){
         Product product = new Product(name, description, price, totalInInventory, category);
-        Product.add(product);
+        Product.addInList(product);
     }
 
     public static void moreExpensiveOrder(){

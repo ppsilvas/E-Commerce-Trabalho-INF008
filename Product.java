@@ -15,7 +15,7 @@ public class Product implements Serializable {
     protected float price;
     private int totalInInventory;
     private String category;
-    private int numberOfProduct = 0;
+    private static int numberOfProduct = 0;
     protected static ArrayList<Product> productList = new ArrayList<Product>();
 
     public Product(){
@@ -29,14 +29,13 @@ public class Product implements Serializable {
         this.price = price;
         this.totalInInventory = totalInInventory;
         this.category = category;
-        productList.add(this);
     }
 
     public static void productBought(int index){
         productList.get(index).totalInInventory--;
     }
 
-    public static void add(Product product){
+    public static void addInList(Product product){
         productList.add(product);
     }
 
@@ -45,6 +44,10 @@ public class Product implements Serializable {
     }
 
     public static void getLowestInventory(){
+        if(productList.isEmpty()){
+            System.out.println("No product in inventory");
+            return;
+        }
         Product lowestInventory = productList.getFirst();
         Iterator<Product> producIterator = productList.iterator();
         while(producIterator.hasNext()){
@@ -53,7 +56,7 @@ public class Product implements Serializable {
                 producIterator.next();
             }
         }
-        System.out.println("["+lowestInventory.id+"] -"+lowestInventory.name);
+        System.out.println("["+lowestInventory.id+"] -"+lowestInventory.name+"- total:"+lowestInventory.totalInInventory);
     }
 
     @SuppressWarnings("unchecked")

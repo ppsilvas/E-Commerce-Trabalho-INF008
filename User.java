@@ -7,15 +7,16 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class User implements Serializable{
-    private int id;
+    protected int id;
     private String name;
     private String email;
     private String password;
     protected int type;
-    private int numberOfUser = 0;
+    private static int numberOfUser = 0;
     private static HashMap<String, User> userMap = new HashMap<String,User>();
 
     private User(){
+        
     }
 
     public User(String name, String email, String password, int  type){

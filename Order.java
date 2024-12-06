@@ -1,30 +1,34 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TreeMap;
 
+@SuppressWarnings("unchecked")
 public class Order implements Serializable{
-    private  int id;
+    private int id;
     private String date;
-    protected static float orderTotal = 0;
+    private float orderTotal;
     private int costumerId;
-    private int numberOfOrder = 0;
+    private static int numberOfOrder = 0;
     private ArrayList<Product> shoppingCart;
     private static TreeMap<Float, Order> orderMap = new TreeMap<Float, Order>();
 
     public Order(){
-
+        
     }
 
-    public Order(int costumerId, ArrayList<Product> shoppingCart){
+    public Order(int costumerId, ArrayList<Product> shoppingCart, float orderTotal){
         id = numberOfOrder++;
-        Date x = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        this.date = sdf.format(x);
+        this.date = SystemUtil.setDate();
+        this.orderTotal = orderTotal;
         this.costumerId = costumerId;
         this.shoppingCart = shoppingCart;
-
     }
 
     public static void finishOrder(float total, Order finishedOrder){
@@ -35,6 +39,21 @@ public class Order implements Serializable{
         float key = orderMap.lastKey();
         Order mostExpensive =  orderMap.get(key);
         System.out.println("["+mostExpensive.id+"] - $"+mostExpensive.orderTotal+" - "+mostExpensive.date);
-    } 
+    }
 
+    public static void deserialize() throws IOException, ClassNotFoundException{
+        FileInputStream fis = new FileInputStream("order.dat");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        orderMap = (TreeMap<Float, Order>) ois.readObject();
+        fis.close();
+        System.out.println("Deserialize with sucess");
+    }
+
+    public static void serialize() throws IOException{
+        FileOutputStream fos = new FileOutputStream("order.dat");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(orderMap);
+        fos.close();
+        System.out.println("Serialize with success!");
+    }
 }

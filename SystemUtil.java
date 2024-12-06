@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -40,4 +42,10 @@ public class SystemUtil {
         }
         
     }
+
+    public static String setDate(){
+        Date x = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(x);
+    }  
 }
