@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,25 +46,38 @@ public class Product implements Serializable {
 
     public static void getLowestInventory(){
         if(productList.isEmpty()){
-            System.out.println("No product in inventory");
+            System.out.println("No product in inventory.");
             return;
         }
         Product lowestInventory = productList.getFirst();
-        Iterator<Product> producIterator = productList.iterator();
-        while(producIterator.hasNext()){
-            if(lowestInventory.totalInInventory > producIterator.next().totalInInventory){
-                lowestInventory = producIterator.next();
-                producIterator.next();
+        for(Product atuaProduct : productList){
+            if(lowestInventory.totalInInventory > atuaProduct.totalInInventory){
+                lowestInventory = atuaProduct;
             }
         }
         System.out.println("["+lowestInventory.id+"] -"+lowestInventory.name+"- total:"+lowestInventory.totalInInventory);
     }
 
+    public static void showInvetory(){
+        if(productList.isEmpty()){
+            System.out.println("No such product in inventory.");
+            return;
+        }
+        for(Product currentProduct: productList){
+            System.out.println("["+currentProduct.id+"] - Name: "+currentProduct.name+" - Inventory: "+currentProduct.totalInInventory);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static void deserialize() throws IOException, ClassNotFoundException{
-        FileInputStream fis = new FileInputStream("product.dat");
+        File file = new File("product.dat");
+        if(!file.exists() || file.length() == 0){
+            return;
+        }
+        FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         productList = (ArrayList<Product>) ois.readObject();
+        numberOfProduct = ois.read();
         fis.close();
         System.out.println("Deserialize with sucess");
     }
@@ -72,6 +86,7 @@ public class Product implements Serializable {
         FileOutputStream fos = new FileOutputStream("product.dat");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(productList);
+        oos.writeInt(numberOfProduct);
         fos.close();
         System.out.println("Serialize with success!");
     }

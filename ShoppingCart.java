@@ -8,7 +8,6 @@ public class ShoppingCart {
     public static void addCart(Product product){
         shoppingCart.add(product);
         total += product.price;
-        Product.productBought(product.id);
     }
 
     public static void showCart(){
@@ -18,6 +17,9 @@ public class ShoppingCart {
 
     public static void finishOrder(int costumerId){
         Order order = new Order(costumerId, shoppingCart, total);
+        for(Product currentProduct: shoppingCart){
+            Product.productBought(currentProduct.id);
+        }
         Order.finishOrder(costumerId, order);
     }
 

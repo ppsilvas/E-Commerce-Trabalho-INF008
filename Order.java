@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -38,13 +39,18 @@ public class Order implements Serializable{
     public static void mostExpensiveOrder(){
         float key = orderMap.lastKey();
         Order mostExpensive =  orderMap.get(key);
-        System.out.println("["+mostExpensive.id+"] - $"+mostExpensive.orderTotal+" - "+mostExpensive.date);
+        System.out.println("["+mostExpensive.id+"] - Buyer: "+mostExpensive.costumerId+" - Total: $"+mostExpensive.orderTotal+" - Date:"+mostExpensive.date);
     }
 
     public static void deserialize() throws IOException, ClassNotFoundException{
-        FileInputStream fis = new FileInputStream("order.dat");
+        File file = new File("order.dat");
+        if(!file.exists() || file.length() == 0){
+            return;
+        }
+        FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         orderMap = (TreeMap<Float, Order>) ois.readObject();
+        numberOfOrder = ois.read();
         fis.close();
         System.out.println("Deserialize with sucess");
     }
@@ -53,6 +59,7 @@ public class Order implements Serializable{
         FileOutputStream fos = new FileOutputStream("order.dat");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(orderMap);
+        oos.writeInt(numberOfOrder);
         fos.close();
         System.out.println("Serialize with success!");
     }
