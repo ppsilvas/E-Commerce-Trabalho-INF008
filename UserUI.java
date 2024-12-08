@@ -1,14 +1,11 @@
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Iterator;
 import java.util.Scanner;
 
 public class UserUI {
-    private Costumer c = new Costumer();
-    private Administrator a = new Administrator();
-    private Product p = new Product();
-    private Order o = new Order();
-
-    public static void login() throws ClassNotFoundException, IOException{
+    public static void login() throws ClassNotFoundException, IOException, InvalidKeySpecException, NoSuchAlgorithmException{
         User.deserialize();
         Product.deserialize();
         Order.deserialize();
@@ -48,21 +45,34 @@ public class UserUI {
                     scanner.nextLine();
                     switch (orderChoice) {
                         case 1:
-                            Iterator<Product> i = Product.productList.iterator();
-                            while (i.hasNext()) {
-                                i.next().display();
-                            }
-                            System.out.println("Select a product: ");
-                            int index =  scanner.nextInt();
-                            scanner.nextLine();
-                            ShoppingCart.addCart(Product.productList.get(index));    
+                            boolean repeat3 = true;
+                            while(repeat3){
+                                Iterator<Product> i = Product.productList.iterator();
+                                while (i.hasNext()) {
+                                    i.next().display();
+                                }
+                                System.out.print("Select a product: ");
+                                int index =  scanner.nextInt();
+                                scanner.nextLine();
+                                ShoppingCart.addCart(Product.productList.get(index)); 
+                                System.out.print("Add more?\n[1]-YES\n[0]-NO\nReponse: ");
+                                int response = scanner.nextInt();
+                                if(response == 0){
+                                    repeat3 = false;
+                                }
+                            } 
+                            break;  
                         case 2:
                             ShoppingCart.showCart();
+                                break;
                         case 3:
                             ShoppingCart.finishOrder(costumer.id);
+                                break;
                         case 0:
                             repeat2 = false;
-                        default: System.out.println("Invalid option. Try again.");
+                                break;
+                        default: System.out.println("Invalid option. Try again");
+                            break;
                     }
                 }
             }else if( choice == 0){
@@ -77,13 +87,14 @@ public class UserUI {
         }
     }
 
-    public static void administratorUI(Administrator admin, Scanner scanner) throws IOException{
+    public static void administratorUI(Administrator admin, Scanner scanner) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException{
         boolean repeat = true;
         while(repeat){    
             System.out.println("[1]-Create new user");
             System.out.println("[2]-Create new product");
             System.out.println("[3]-Lowest product in invertory-Report");
             System.out.println("[4]-Most expensive order-Report");
+            System.out.println("[5]-Show Inventory");
             System.out.println("[0]-Exit");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -126,6 +137,7 @@ public class UserUI {
                 }
                 case 3->Administrator.productWithLowestInvetory();
                 case 4->Administrator.moreExpensiveOrder();
+                case 5->Administrator.showInvetory();
                 case 0->{
                     User.serialize();
                     Product.serialize();
