@@ -1,5 +1,7 @@
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,25 +24,27 @@ public class SystemUtil {
         }
     }
 
-    public static String hashPassword(String password){
+    public static byte[] generateSalt(){
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
-        try {
-            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            byte[] hash = factory.generateSecret(spec).getEncoded();
-            
-            StringBuilder hexString = new StringBuilder();
-            for(byte b:hash){
-                hexString.append(String.format("%02X", 0XFF & b));
-            }
-            String hashed = hexString.toString();
-            return hashed;
-        } catch (Exception e) {
-            return e.toString();
+        return salt;
+    }
+
+    public static byte[] hashPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException{
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = factory.generateSecret(spec).getEncoded();
+        return hash;    
+    }
+
+    private static String byteToHex(byte[] hash){      
+        StringBuilder hexString = new StringBuilder();
+        for(byte b:hash){
+            hexString.append(String.format("%02X", 0XFF & b));
         }
-        
+        String hashed = hexString.toString();
+        return hashed;
     }
 
     public static String setDate(){
