@@ -52,7 +52,6 @@ public class Order implements Serializable{
         orderMap = (TreeMap<Float, Order>) ois.readObject();
         numberOfOrder = ois.read();
         fis.close();
-        System.out.println("Deserialize with sucess");
     }
 
     public static void serialize() throws IOException{
@@ -61,6 +60,5 @@ public class Order implements Serializable{
         oos.writeObject(orderMap);
         oos.writeInt(numberOfOrder);
         fos.close();
-        System.out.println("Serialize with success!");
     }
 }

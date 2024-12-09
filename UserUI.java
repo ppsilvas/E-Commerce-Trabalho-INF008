@@ -10,10 +10,11 @@ public class UserUI {
         Product.deserialize();
         Order.deserialize();
         Scanner scanner = new Scanner(System.in);
+        SystemUtil.clearDisplay();
         System.out.println("Login");
-        System.out.println("Email: ");
+        System.out.print("Email: ");
         String email = scanner.nextLine();
-        System.out.println("Password: ");
+        System.out.print("Password: ");
         String password = scanner.nextLine();
         User user = User.getUser(email, password);
         if(user == null){
@@ -30,6 +31,7 @@ public class UserUI {
     public static void costumerUI(Costumer costumer, Scanner scanner) throws IOException{
         boolean repeat1 = true;
         while (repeat1) {
+            SystemUtil.clearDisplay();
             System.out.println("[1]-Start new order");
             System.out.println("[0]-Exit");
             int choice = scanner.nextInt();
@@ -37,6 +39,7 @@ public class UserUI {
             if(choice == 1){
                 boolean repeat2 = true;
                 while(repeat2){
+                    SystemUtil.clearDisplay();
                     System.out.println("[1]-Add item in cart");
                     System.out.println("[2]-Shopping cart view");
                     System.out.println("[3]-Finish order");
@@ -47,6 +50,7 @@ public class UserUI {
                         case 1:
                             boolean repeat3 = true;
                             while(repeat3){
+                                SystemUtil.clearDisplay();
                                 Iterator<Product> i = Product.productList.iterator();
                                 while (i.hasNext()) {
                                     i.next().display();
@@ -63,9 +67,13 @@ public class UserUI {
                             } 
                             break;  
                         case 2:
+                            SystemUtil.clearDisplay();
                             ShoppingCart.showCart();
+                            System.out.println("Press ENTER to continue...");
+                            scanner.nextLine();
                                 break;
                         case 3:
+                            SystemUtil.clearDisplay();
                             ShoppingCart.finishOrder(costumer.id);
                                 break;
                         case 0:
@@ -76,6 +84,7 @@ public class UserUI {
                     }
                 }
             }else if( choice == 0){
+                SystemUtil.clearDisplay();
                 System.out.println("Logoff");
                 User.serialize();
                 Product.serialize();
@@ -89,7 +98,8 @@ public class UserUI {
 
     public static void administratorUI(Administrator admin, Scanner scanner) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException{
         boolean repeat = true;
-        while(repeat){    
+        while(repeat){  
+            SystemUtil.clearDisplay();  
             System.out.println("[1]-Create new user");
             System.out.println("[2]-Create new product");
             System.out.println("[3]-Lowest product in invertory-Report");
@@ -100,48 +110,71 @@ public class UserUI {
             scanner.nextLine();
             switch (choice) {
                 case 1->{
-                    System.out.println("Name:");
+                    SystemUtil.clearDisplay();
+                    System.out.print("Name: ");
                     String name = scanner.nextLine();
-                    System.out.println("E-mail:");
+                    System.out.print("E-mail: ");
                     String email = scanner.nextLine();
-                    System.out.println("Password:");
+                    if(User.checkEmail(email)){
+                        System.out.println("This email is already used\nPress ENTER to continue...");
+                        scanner.nextLine();
+                        break;
+                    }
+                    System.out.print("Password: ");
                     String password = scanner.nextLine();
-                    System.out.println("Type:\n[1]-Costumer\n[2]-Administrator\nSelect the type");
+                    System.out.print("Type:\n[1]-Costumer\n[2]-Administrator\nSelect the type: ");
                     int type = scanner.nextInt();
                     scanner.nextLine();
                     String adress = "";
                     if(type == 1){
-                        System.out.println("Adress:");
+                        System.out.print("Adress: ");
                         adress = scanner.nextLine();
                         Administrator.createUser(name, email, password, type, adress);
                     }else if(type ==2){
                         Administrator.createUser(name, email, password, type, adress);
                     }else{
-                        System.out.println("Invalid option. Try again");
+                        System.out.println("Invalid option. Try again!");
                     }
                 }
                 case 2->{
-                    System.out.println("Name:");
+                    SystemUtil.clearDisplay();
+                    System.out.print("Name: ");
                     String name = scanner.nextLine();
-                    System.out.println("Description:");
+                    System.out.print("Description: ");
                     String description = scanner.nextLine();
-                    System.out.println("Price:");
+                    System.out.print("Price: ");
                     float price = scanner.nextFloat();
                     scanner.nextLine();
-                    System.out.println("In inventory:");
+                    System.out.print("In inventory: ");
                     int inInventory = scanner.nextInt();
                     scanner.nextLine();
-                    System.out.println("Category:");
+                    System.out.print("Category: ");
                     String category = scanner.nextLine();
                     Administrator.createProduct(name, description, price, inInventory, category);
                 }
-                case 3->Administrator.productWithLowestInvetory();
-                case 4->Administrator.moreExpensiveOrder();
-                case 5->Administrator.showInvetory();
+                case 3->{
+                    SystemUtil.clearDisplay();
+                    Administrator.productWithLowestInvetory();
+                    System.out.println("Press ENTER to continue...");
+                    scanner.nextLine();
+                }
+                case 4->{
+                    SystemUtil.clearDisplay();
+                    Administrator.moreExpensiveOrder();
+                    System.out.println("Press ENTER to continue...");
+                    scanner.nextLine();
+                }
+                case 5->{
+                    SystemUtil.clearDisplay();
+                    Administrator.showInvetory();
+                    System.out.println("Press ENTER to continue...");
+                    scanner.nextLine();
+                }
                 case 0->{
                     User.serialize();
                     Product.serialize();
                     Order.serialize();
+                    SystemUtil.clearDisplay();
                     System.out.println("Logoff");
                     repeat = false;
                 }

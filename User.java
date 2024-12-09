@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class User implements Serializable{
     protected int id;
@@ -37,11 +39,22 @@ public class User implements Serializable{
         userMap.putIfAbsent(email, user);
     }
 
+    public static boolean checkEmail(String email){
+        return userMap.containsKey(email);
+    }
+
+    public static void display(){
+       Collection<User> c = userMap.values();
+       Iterator<User> i = c.iterator();
+       while(i.hasNext()){
+            System.out.println(i.next().email);
+       }
+
+    }
+
     public static User getUser(String username, String password) throws InvalidKeySpecException, NoSuchAlgorithmException{
         User user = userMap.get(username);
         if(user != null && password != null){
-            System.out.println(user.password);
-            System.out.println(SystemUtil.hashPassword(password, user.salt));
             if(MessageDigest.isEqual(user.password, SystemUtil.hashPassword(password, user.salt))){
                 return user;
             }
@@ -57,22 +70,16 @@ public class User implements Serializable{
         }
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
-        System.out.println("Deserializando Hash Map");
         userMap = (HashMap<String, User>) ois.readObject();
-        System.out.println("Deserializando total de Usuários");;
         numberOfUser = ois.read();
         fis.close();
-        System.out.println("Deserialize with sucess");
     }
 
     public static void serialize() throws IOException{
         FileOutputStream fos = new FileOutputStream("user.dat");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        System.out.println("Serializando Hash Map");
         oos.writeObject(userMap);
-        System.out.println("Serizalizando total de Usuários");;
         oos.writeInt(numberOfUser);
         fos.close();
-        System.out.println("Serialize with success!");
     }
 }

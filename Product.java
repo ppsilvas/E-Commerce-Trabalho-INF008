@@ -79,7 +79,6 @@ public class Product implements Serializable {
         productList = (ArrayList<Product>) ois.readObject();
         numberOfProduct = ois.read();
         fis.close();
-        System.out.println("Deserialize with sucess");
     }
 
     public static void serialize() throws IOException{
@@ -88,6 +87,5 @@ public class Product implements Serializable {
         oos.writeObject(productList);
         oos.writeInt(numberOfProduct);
         fos.close();
-        System.out.println("Serialize with success!");
     }
 }

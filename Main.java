@@ -7,12 +7,13 @@ public class Main{
     public static void main(String[] args) throws IOException, ClassNotFoundException, InvalidKeySpecException, NoSuchAlgorithmException {
         // Product.deserialize();
         // User.deserialize();
+        // User.display();
         // Order.deserialize();
         UserUI.login();
-        // Costumer c1 = new Costumer("Pedro", "ppsilvasantana@gmail.com", "pedro", 1, "Rua Duarte da Costa");
+        // Costumer c1 = new Costumer("Pedro", "pedro@gmail.com", "pedro", 1, "Rua Duarte da Costa");
         // Administrator a1 = new Administrator("admin", "admin", "admin", 2);
         // User.add("admin",(Administrator) a1);
-        // User.add("ppsilvasantana@gmail.com",(Costumer)c1);
+        // User.add("pedro@gmail.com",(Costumer)c1);
         // Product p1 = new Product("Banana", "Tropical fruit", 2.5f, 100, "Horti-fruit");
         // Product.addInList(p1);
         // Administrator.createProduct("Soup", "Chicken soup", 4.99f, 500, "Food");
